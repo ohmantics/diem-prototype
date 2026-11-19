@@ -1,0 +1,15 @@
+# The ihl-protective profile.   # draft: #ex-ihl
+# The hospital's records service is named by its own name, so there is
+# nothing to cross-check against a physical carrier.
+
+[asset]
+cross-check = []
+
+[naming]
+derive = "after-first-label"     # records.hospital.example is published at records._diem.hospital.example
+
+[endorsement]
+required = true
+issuer-above = "_diem"           # the issuer is the name above the _diem label: hospital.example
+scope-keys = ["purpose", "treatment"]   # every value of these map keys must be in the endorsement's scope
+binds-key = true                 # the endorsement must name the issuer's current key

@@ -1,0 +1,14 @@
+# A person serving with a peacekeeping mission.   # draft: #ex-peacekeepers
+# The emblem deliberately carries nothing that identifies the person.
+
+[asset]
+cross-check = []
+
+[endorsement]
+required = true
+issuer-above = "_diem"           # the mission is the name above the _diem label
+scope-keys = ["treatment"]       # the deploying organization endorses what the badge asks of others
+binds-key = true
+
+[if-invalid]
+at = "emblem-zone"               # the mission's own emblem says what to do with a badge that fails

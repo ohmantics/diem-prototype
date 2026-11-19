@@ -1,0 +1,9 @@
+; The ISPM 15 mark of a wooden pallet.   ; draft: #ex-logistics
+
+ispm15-emblem = {
+  profile: "ispm15",
+  asset: domain-name,
+  country: country-code,
+  producer: tstr,                           ; registration number from the NPPO
+  measure: "HT" / "MB" / "DH" / "SF"        ; ISPM 15 treatment codes
+}

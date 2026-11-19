@@ -1,0 +1,7 @@
+# One device.   # draft: #ex-logistics
+
+[asset]
+cross-check = ["serial"]
+
+[endorsement]
+required = false

@@ -1,0 +1,8 @@
+; The visual mark facet.   ; draft: #marks
+
+mark-emblem = {
+  profile: "mark",
+  asset: domain-name,
+  media-type: tstr,
+  image: bstr
+}

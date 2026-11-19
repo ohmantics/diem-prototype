@@ -1,0 +1,15 @@
+; The ihl-protective profile.   ; draft: #ex-ihl
+
+purpose-id = "protective-red-cross" / "protective-red-crescent" / "protective-red-crystal"
+
+ihl-protective-emblem = {
+  profile: "ihl-protective",
+  asset: domain-name,
+  purpose: [+ purpose-id],
+  treatment: [+ treatment-entry],
+  basis: [+ citation],
+  valid: validity,
+  issuer-name: lang-text,
+  mark: domain-name,
+  endorsements: [+ { by: domain-name, staple: bstr }]
+}

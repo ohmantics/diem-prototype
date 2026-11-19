@@ -1,0 +1,59 @@
+; A consignment.   ; draft: #ex-logistics
+
+hs-6 = tstr .regexp "^[0-9]{6}$"         ; Harmonized System
+hts-10 = tstr .regexp "^[0-9]{10}$"
+container-number = tstr .regexp "^[A-Z]{3}[UJZ][0-9]{7}$"   ; ISO 6346
+unlocode = tstr .regexp "^[A-Z]{2}[A-Z0-9]{3}$"             ; UN/LOCODE
+content = { emblem: domain-name, ? count: uint, ? "digest": digest }   ; quoted: bare digest would name the rule
+valuation-basis = "transaction-value" / "identical-goods" / "similar-goods"
+                / "deductive" / "computed" / "fallback"
+
+consignment-emblem = {
+  profile: "consignment",
+  asset: domain-name,
+  hs-code: hs-6,
+  hts-us: hts-10,
+  origin: country-code,
+  container: container-number,
+  seal: tstr,
+  packages: quantity,
+  gross-mass: quantity,
+  transport: {
+    bill-of-lading: tstr,
+    carrier: tstr,
+    vessel: tstr,
+    voyage: tstr,
+    port-of-lading: unlocode,
+    port-of-unlading: unlocode
+  },
+  valuation: encrypted,
+  parties: encrypted,
+  ? valuation-digest: digest,               ; salted digest of the valuation plaintext
+  contents: [+ content]
+}
+
+; What the customs authority reads after decrypting.
+valuation-plaintext = {
+  ? salt: bstr,                           ; keeps a guessable value from being guessed from its digest
+  method: valuation-basis,
+  related-party: bool,
+  incoterm: tstr,
+  invoice: tstr,
+  lines: [+ { class-ref: domain-name, line-qty: uint, unit-price: money }],
+  total: money,
+  freight: money,
+  insurance: money,
+  additions: [* money]
+}
+
+party = { name: tstr, reference: tstr }
+
+parties-plaintext = {
+  seller: party,
+  buyer: party,
+  importer-of-record: party,
+  bond: tstr,
+  ship-to: party,
+  consolidator: party,
+  stuffing-location: tstr
+}

@@ -1,0 +1,8 @@
+# A dataset (illustrative).   # draft: #hierarchy
+# It carries the data's own protections, apart from those of the drive that holds it.
+
+[asset]
+cross-check = []
+
+[endorsement]
+required = false

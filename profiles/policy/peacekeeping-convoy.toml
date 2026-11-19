@@ -1,0 +1,9 @@
+# A convoy's position, published as a dynamic facet.   # draft: #ex-peacekeepers
+# The position is encrypted to the mission's operations center and the host
+# state's liaison, so that nobody else can follow the convoy.
+
+[asset]
+cross-check = []
+
+[endorsement]
+required = false

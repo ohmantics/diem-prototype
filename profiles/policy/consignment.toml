@@ -1,0 +1,18 @@
+# A consignment.   # draft: #ex-logistics
+
+[asset]
+cross-check = ["container", "seal", "gross-mass"]
+
+[endorsement]
+required = false
+
+[references]
+digests = "required"             # a declaration to customs pins what it saw (draft #hierarchy)
+
+[confidential]
+digested = ["valuation"]         # a recipient can prove what the issuer published (draft #confidentiality)
+
+[facets.live]                    # a dynamic facet, in the issuer's online-signed zone (draft #facets)
+label = "_live"
+rrtype = "LOC"
+what = "position"

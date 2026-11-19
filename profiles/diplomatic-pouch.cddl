@@ -1,0 +1,18 @@
+; A diplomatic pouch.   ; draft: #ex-pouch
+
+diplomatic-pouch-emblem = {
+  profile: "diplomatic-pouch",
+  asset: domain-name,
+  sending-state: country-code,
+  consignee: domain-name,
+  seal: tstr,
+  pieces: uint,
+  gross-mass: quantity,
+  ? courier: encrypted,
+  treatment: [+ treatment-entry],
+  basis: [+ citation],
+  valid: validity
+}
+
+; What the receiving state reads after decrypting.
+courier-plaintext = { name: tstr, letter: tstr }

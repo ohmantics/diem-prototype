@@ -1,0 +1,277 @@
+# The integer each name encodes to in the strawman encoding.   # draft: #strawman
+#
+# The numbers are illustrative. The common keys are positive (1 to 23 take
+# one octet), each profile's own keys are negative (-1 to -24 take one octet),
+# and a map nested inside an emblem has a small key space of its own.
+# Everything else in the repository, including the CDDL, uses the names.
+
+[keys.common]
+profile = 1
+asset = 2
+valid = 3
+issuer-name = 4
+treatment = 5
+basis = 6
+crit = 7
+origin = 8
+mark = 9
+gross-mass = 10
+seal = 11
+endorsements = 12
+class-ref = 13
+
+[keys.ihl-protective]
+purpose = -1
+
+[keys.mark]
+media-type = -1
+image = -2
+
+[keys.endorsement]
+issuer = -1
+endorsed-profile = -2
+scope = -3
+dnskey-digest = -4
+mark-digest = -5
+
+[keys.product-class]
+gtin = -1
+model = -2
+dangerous-goods = -3
+battery-chemistry = -4
+battery-energy = -5
+recycling = -6
+mid-us = -7
+radio-auth = -8
+
+[keys.product-item]
+serial = -1
+made = -2
+
+[keys.ispm15]
+country = -1
+producer = -2
+measure = -3
+
+[keys.consignment]
+hs-code = -1
+hts-us = -2
+container = -3
+packages = -4
+transport = -5
+valuation = -6
+parties = -7
+contents = -8
+valuation-digest = -9
+
+[keys.diplomatic-pouch]
+sending-state = -1
+consignee = -2
+pieces = -3
+courier = -4
+
+[keys.peacekeeping-personnel]
+mission = -1
+status = -2
+
+[keys.peacekeeping-mission]
+contact = -1
+if-invalid = -2
+
+[keys.peacekeeping-convoy]
+mission = -1
+position = -2
+
+[keys.dg-package]
+un-number = -1
+dg-class = -2
+valuation = -3
+
+[keys.cites-permit]
+permit-number = -1
+appendix = -2
+species-code = -3
+
+[keys.storage-device]
+serial = -1
+dataset = -2
+
+[keys.dataset]
+details = -1
+
+[keys.recipient-key]
+key-id = -1
+cose-alg = -2
+public-key = -3
+
+# Maps nested in an emblem.
+
+[keys.endorsement-entry]
+by = 1
+staple = 2
+
+[keys.citation]
+scheme = 1
+id = 2
+text = 3
+
+[keys.transport]
+bill-of-lading = 1
+carrier = 2
+vessel = 3
+voyage = 4
+port-of-lading = 5
+port-of-unlading = 6
+
+[keys.content]
+emblem = 1
+count = 2
+digest = 3
+
+[keys.dangerous-goods]
+un-number = 1
+class = 2
+
+[keys.radio-auth]
+fcc-id = 1
+
+# The plaintexts of encrypted values.
+
+[keys.valuation]
+method = 1
+related-party = 2
+incoterm = 3
+invoice = 4
+lines = 5
+total = 6
+freight = 7
+insurance = 8
+additions = 9
+salt = 10
+
+[keys.line]
+class-ref = 1
+line-qty = 2
+unit-price = 3
+
+[keys.parties]
+seller = 1
+buyer = 2
+importer-of-record = 3
+bond = 4
+ship-to = 5
+consolidator = 6
+stuffing-location = 7
+
+[keys.party]
+name = 1
+reference = 2
+
+[keys.courier]
+name = 1
+letter = 2
+
+[keys.details]
+title = 1
+records = 2
+steward = 3
+
+[keys.position]
+latitude = 1
+longitude = 2
+as-of = 3
+
+# Enumerated values are integers in the encoding.
+
+[enums.profile-id]
+ihl-protective = 1
+mark = 2
+product-class = 3
+product-item = 4
+ispm15 = 5
+consignment = 6
+diplomatic-pouch = 7
+peacekeeping-personnel = 8
+peacekeeping-mission = 9
+recipient-key = 10
+endorsement = 11
+peacekeeping-convoy = 12
+dg-package = 13
+cites-permit = 14
+storage-device = 15
+dataset = 16
+
+[enums.modality]
+prohibit = 1
+request = 2
+require = 3
+
+[enums.action]
+attack = 1
+open = 2
+detain = 3
+inspect = 4
+read = 5
+report = 6
+"verify-identity" = 7
+
+[enums.citation-scheme]
+uri = 1
+eli = 2
+akn = 3
+
+[enums.purpose-id]
+protective-red-cross = 1
+protective-red-crescent = 2
+protective-red-crystal = 3
+
+[enums.chemistry]
+li-ion = 1
+li-polymer = 2
+nimh = 3
+alkaline = 4
+
+[enums.valuation-basis]
+transaction-value = 1
+identical-goods = 2
+similar-goods = 3
+deductive = 4
+computed = 5
+fallback = 6
+
+[enums.personnel-status]
+peacekeeper = 1
+civilian-staff = 2
+military-observer = 3
+
+# Which enumeration the values under a map key come from.
+[values-of]
+profile = "profile-id"
+endorsed-profile = "profile-id"
+purpose = "purpose-id"
+scope = "purpose-id"
+scheme = "citation-scheme"
+battery-chemistry = "chemistry"
+method = "valuation-basis"
+status = "personnel-status"
+
+# Which key space the maps under a map key use.
+[maps-of]
+endorsements = "endorsement-entry"
+basis = "citation"
+transport = "transport"
+contents = "content"
+dangerous-goods = "dangerous-goods"
+radio-auth = "radio-auth"
+lines = "line"
+seller = "party"
+buyer = "party"
+importer-of-record = "party"
+ship-to = "party"
+consolidator = "party"
+
+# Maps whose keys are enumerated modalities and whose values are actions.
+[enum-maps]
+treatment = ["modality", "action"]
+if-invalid = ["modality", "action"]
+scope = ["modality", "action"]

@@ -1,0 +1,46 @@
+; Value types and enumerations shared by all profiles.   ; draft: #data-model
+;
+; Map keys and enumerated values are written as text names, as in the
+; draft; the integers an encoding carries are in keys.toml. An emblem may
+; also carry "crit" (a list of critical map key names) and keys of the
+; issuer's own, named under a domain the issuer controls; a profile's rule
+; lists only the profile's own keys.
+;
+; A decimal's mantissa must have no trailing zeros; CDDL cannot say so, so
+; the deterministic-encoding check in diem/cbor.py does.
+
+profile-id = "ihl-protective" / "mark" / "endorsement" / "product-class"
+           / "product-item" / "ispm15" / "consignment" / "diplomatic-pouch"
+           / "peacekeeping-personnel" / "peacekeeping-mission" / "recipient-key"
+           / "peacekeeping-convoy" / "dg-package" / "cites-permit"
+           / "storage-device" / "dataset"
+
+; Treatment: a modality applied to an action.   ; draft: #treatment
+action = "attack" / "open" / "detain" / "inspect" / "read" / "report" / "verify-identity"
+treatment-entry = { prohibit: action } / { request: action } / { require: action }
+citation-scheme = "uri" / "eli" / "akn"
+citation-id = uri / tstr
+citation = { scheme: citation-scheme, id: citation-id, ? "text": lang-text }       ; quoted: bare `text` would name the prelude type
+
+; Scalars.
+digest = bstr .size 32
+timestamp = #6.1(uint)                      ; whole seconds since the epoch
+validity = [timestamp, timestamp]           ; not-before, not-after
+decimal = #6.4([int, int])                  ; exponent, mantissa
+lang-text = #6.38([tstr, tstr])             ; language tag, text
+uri = #6.32(tstr)
+domain-name = tstr .regexp "^[a-z0-9_]([a-z0-9_-]*[a-z0-9_])?(\\.[a-z0-9_]([a-z0-9_-]*[a-z0-9_])?)*$"
+
+; Quantities and money.   ; draft: #data-model (Value Types)
+quantity = [uint / decimal, unit-code]      ; a count or a measure, with its unit
+money = [decimal, currency-code]
+
+; Codes from external lists, carried verbatim.   ; draft: #code-lists
+country-code = tstr .regexp "^[A-Z]{2}$"    ; ISO 3166-1 alpha-2
+currency-code = tstr .regexp "^[A-Z]{3}$"   ; ISO 4217
+unit-code = tstr .regexp "^[A-Z0-9]{1,3}$"  ; UNECE Recommendations 20 and 21
+
+; Encrypted values: COSE_Encrypt0 or COSE_Encrypt.   ; draft: #confidentiality
+cose-recipient = [bstr, {* int => any}, bstr]
+encrypted = #6.16([bstr, {* int => any}, bstr])
+          / #6.96([bstr, {* int => any}, bstr, [+ cose-recipient]])

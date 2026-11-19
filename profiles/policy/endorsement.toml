@@ -1,0 +1,8 @@
+# The ENDORSE record.   # draft: #endorsement
+# It names the endorsed issuer instead of an asset.
+
+[asset]
+cross-check = []
+
+[endorsement]
+required = false

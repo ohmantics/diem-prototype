@@ -1,0 +1,8 @@
+# Product families and variants.   # draft: #ex-logistics
+# One profile covers both: a variant refers to its family with class-ref.
+
+[asset]
+cross-check = ["gtin"]
+
+[endorsement]
+required = false

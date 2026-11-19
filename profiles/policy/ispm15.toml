@@ -1,0 +1,10 @@
+# The ISPM 15 mark of a wooden pallet.   # draft: #ex-logistics
+# The country and producer number are printed on the pallet itself.
+
+[asset]
+cross-check = ["country", "producer"]
+
+[endorsement]
+required = true
+issuer-above = "_diem"          # the producer is the name above the _diem label: pallets.example
+                                 # No scope to cover and no key binding: the NPPO endorses the producer.

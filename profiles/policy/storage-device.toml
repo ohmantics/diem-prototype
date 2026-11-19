@@ -1,0 +1,8 @@
+# A storage device (illustrative).   # draft: #hierarchy
+# The serial number is printed on the drive. It refers to the emblem of the dataset it holds.
+
+[asset]
+cross-check = ["serial"]
+
+[endorsement]
+required = false

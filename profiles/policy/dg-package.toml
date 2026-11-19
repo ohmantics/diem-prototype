@@ -1,0 +1,13 @@
+# A package with dangerous-goods data (illustrative).   # draft: #open-issues
+# Its position is a dynamic facet; every handler needs the dangerous-goods data.
+
+[asset]
+cross-check = []
+
+[endorsement]
+required = false
+
+[facets.live]
+label = "_live"
+rrtype = "LOC"
+what = "position"

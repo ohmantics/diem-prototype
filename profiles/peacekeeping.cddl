@@ -1,0 +1,30 @@
+; Peacekeeping personnel and missions.   ; draft: #ex-peacekeepers
+
+personnel-status = "peacekeeper" / "civilian-staff" / "military-observer"
+
+peacekeeping-personnel-emblem = {
+  profile: "peacekeeping-personnel",
+  asset: domain-name,
+  mission: domain-name,
+  status: personnel-status,
+  valid: validity,
+  treatment: [+ treatment-entry]
+}
+
+peacekeeping-mission-emblem = {
+  profile: "peacekeeping-mission",
+  asset: domain-name,
+  contact: uri,
+  if-invalid: [+ treatment-entry]
+}
+
+; A convoy's position, a dynamic facet encrypted to those who may follow it.
+peacekeeping-convoy-emblem = {
+  profile: "peacekeeping-convoy",
+  asset: domain-name,
+  mission: domain-name,
+  valid: validity,
+  position: encrypted
+}
+
+position-plaintext = { latitude: decimal, longitude: decimal, as-of: timestamp }

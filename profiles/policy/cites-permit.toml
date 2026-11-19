@@ -1,0 +1,8 @@
+# A CITES permit item (illustrative).   # draft: #open-issues
+# The permit number is printed on the permit itself.
+
+[asset]
+cross-check = ["permit-number"]
+
+[endorsement]
+required = false

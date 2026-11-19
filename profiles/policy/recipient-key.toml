@@ -1,0 +1,8 @@
+# The public key of a recipient of encrypted values, published in the
+# recipient's own zone.   # draft: #confidentiality
+
+[asset]
+cross-check = []
+
+[endorsement]
+required = false

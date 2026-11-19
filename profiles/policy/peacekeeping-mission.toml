@@ -1,0 +1,10 @@
+# The mission itself, which says what to do when a badge does not validate.   # draft: #ex-peacekeepers
+
+[asset]
+cross-check = []
+
+[endorsement]
+required = true
+issuer-above = "_diem"
+scope-keys = ["if-invalid"]
+binds-key = true

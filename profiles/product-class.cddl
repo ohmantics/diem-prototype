@@ -1,0 +1,20 @@
+; Product families and variants.   ; draft: #ex-logistics
+
+chemistry = "li-ion" / "li-polymer" / "nimh" / "alkaline"
+gtin-14 = tstr .regexp "^[0-9]{14}$"
+un-dg-number = tstr .regexp "^[0-9]{4}$"       ; UN dangerous goods number
+
+product-class-emblem = {
+  profile: "product-class",
+  asset: domain-name,
+  ? class-ref: domain-name,                 ; a variant refers to its family
+  ? gtin: gtin-14,
+  model: tstr,
+  ? dangerous-goods: { un-number: un-dg-number, class: tstr },
+  ? battery-chemistry: chemistry,
+  ? battery-energy: quantity,
+  ? recycling: uri,
+  ? origin: country-code,
+  ? mid-us: tstr,
+  ? radio-auth: { fcc-id: tstr }
+}

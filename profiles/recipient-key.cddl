@@ -1,0 +1,11 @@
+; The public key of a recipient of encrypted values, published in the
+; recipient's own zone.   ; draft: #confidentiality
+
+recipient-key-emblem = {
+  profile: "recipient-key",
+  asset: domain-name,
+  key-id: bstr .size (4..16),
+  cose-alg: int,                            ; COSE algorithm number
+  public-key: bstr .size (32..65),
+  valid: validity
+}

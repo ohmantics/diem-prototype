@@ -1,0 +1,37 @@
+# Captures for hospital: records._diem.hospital.example
+# DiG 9.20.30-1~deb13u1-Debian, delv 9.20.30-1~deb13u1-Debian
+# images: cznic/knot:v3.6.2@sha256:174b0fcb24c6c3bc5065c9d1ce46b588eec607a5f32bc40ff0cda60150f00bd9 diem-capture diem-prototype diem-resolver 
+# 2026-11-25 02:52 UTC
+
+## dig @10.53.0.53 (resolver) +notcp
+;; flags: qr tc rd ra ad; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+; EDNS: version: 0, flags: do; udp: 1232
+;; MSG SIZE  rcvd: 59
+records._diem.hospital.example. 3600 IN TYPE65280 ...
+records._diem.hospital.example. 3600 IN RRSIG ...
+
+## dig @10.53.0.53 (resolver) +tcp
+;; flags: qr rd ra ad; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+; EDNS: version: 0, flags: do; udp: 1232
+;; MSG SIZE  rcvd: 2126
+records._diem.hospital.example. 3600 IN TYPE65280 ...
+records._diem.hospital.example. 3600 IN RRSIG ...
+
+## dig @10.53.0.13 (emblem-server) +notcp
+;; flags: qr aa tc rd; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+; EDNS: version: 0, flags: do; udp: 1232
+;; MSG SIZE  rcvd: 59
+records._diem.hospital.example. 3600 IN TYPE65280 ...
+records._diem.hospital.example. 3600 IN RRSIG ...
+
+## dig @10.53.0.13 (emblem-server) +tcp
+;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+; EDNS: version: 0, flags: do; udp: 1232
+;; MSG SIZE  rcvd: 2126
+records._diem.hospital.example. 3600 IN TYPE65280 ...
+records._diem.hospital.example. 3600 IN RRSIG ...
+
+## delv @10.53.0.53 validating against the root key
+; fully validated

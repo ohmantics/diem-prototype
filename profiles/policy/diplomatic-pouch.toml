@@ -1,0 +1,9 @@
+# A diplomatic pouch.   # draft: #ex-pouch
+# The seal, the number of pieces and the mass are what an officer can
+# compare with the pouch in front of them.
+
+[asset]
+cross-check = ["seal", "pieces", "gross-mass"]
+
+[endorsement]
+required = false

@@ -1,0 +1,9 @@
+; One device.   ; draft: #ex-logistics
+
+product-item-emblem = {
+  profile: "product-item",
+  asset: domain-name,
+  class-ref: domain-name,
+  serial: tstr,
+  made: timestamp
+}

@@ -1,0 +1,42 @@
+; Illustrative profiles for the diverted-flight example.   ; draft: #open-issues
+;
+; The draft does not define these profiles (it mentions dangerous goods,
+; CITES permits and datasets only in passing, in #hierarchy and #examples).
+; They are minimal, to show how one architecture serves packages of several
+; kinds, and are not proposals.
+
+dg-package-emblem = {
+  profile: "dg-package",
+  asset: domain-name,
+  un-number: un-dg-number,
+  dg-class: tstr,
+  gross-mass: quantity,
+  ? valuation: encrypted
+}
+
+cites-permit-emblem = {
+  profile: "cites-permit",
+  asset: domain-name,
+  permit-number: tstr,
+  appendix: "I" / "II" / "III",
+  species-code: tstr,
+  valid: validity
+}
+
+; A physical drive; the data on it has an emblem of its own, which it refers to.
+storage-device-emblem = {
+  profile: "storage-device",
+  asset: domain-name,
+  serial: tstr,
+  dataset: domain-name
+}
+
+dataset-emblem = {
+  profile: "dataset",
+  asset: domain-name,
+  treatment: [+ treatment-entry],
+  details: encrypted
+}
+
+; What the steward of a dataset reads after decrypting.
+details-plaintext = { title: tstr, records: uint, steward: tstr }

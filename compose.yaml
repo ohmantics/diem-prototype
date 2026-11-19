@@ -1,0 +1,134 @@
+# The roles of the draft's Roles figure (#roles), one service each, on one network.
+#
+#   docker compose up -d --build --wait
+#   docker compose run --rm validator
+#   docker compose down --volumes
+#
+# The README explains each step.
+# DIEM_EXAMPLE picks the example served: hospital (default) or pouch.
+# DIEM_NET is the first three octets of the /24 the services use (default 10.53.0);
+# set it if that range is already in use on the Docker host or a VPN.
+# Both can also go in a .env file next to this one. Run "down --volumes" before
+# switching examples.
+name: diem
+
+x-knot: &knot
+  image: cznic/knot:v3.6.2@sha256:174b0fcb24c6c3bc5065c9d1ce46b588eec607a5f32bc40ff0cda60150f00bd9
+  tmpfs: [/storage, /rundir]
+  volumes: ["zones:/zones:ro"]
+  depends_on:
+    generate: { condition: service_completed_successfully }
+
+# The image of this repository's code, used to write the zones and to validate.
+x-diem: &diem
+  image: diem-prototype
+  build: { context: ., dockerfile: compose/validator/Dockerfile }
+
+volumes:
+  zones: {}
+  capture: {}
+
+networks:
+  dns:
+    ipam:
+      config:
+        - subnet: ${DIEM_NET:-10.53.0}.0/24
+
+services:
+  # Builds and signs the example's zones, writes them to the zones volume, and exits.
+  generate:
+    <<: *diem
+    environment:
+      DIEM_NET: ${DIEM_NET:-10.53.0}
+    volumes: ["zones:/zones"]
+    command: [python, -m, compose.generate, "${DIEM_EXAMPLE:-hospital}"]
+    network_mode: none
+
+  root:                                     # .
+    <<: *knot
+    command: knotd -c /zones/root/knot.conf
+    networks: { dns: { ipv4_address: "${DIEM_NET:-10.53.0}.10" } }
+
+  tld:                                      # example.
+    <<: *knot
+    command: knotd -c /zones/tld/knot.conf
+    networks: { dns: { ipv4_address: "${DIEM_NET:-10.53.0}.11" } }
+
+  # gov.example., mfa.gov.example., hospital.example.: ordinary DNS, no knowledge of DIEM
+  issuer-dns:
+    <<: *knot
+    command: knotd -c /zones/issuer-dns/knot.conf
+    networks: { dns: { ipv4_address: "${DIEM_NET:-10.53.0}.12" } }
+
+  # _diem.mfa.gov.example., _diem.hospital.example., behind a real delegation
+  emblem-server:
+    <<: *knot
+    command: knotd -c /zones/emblem-server/knot.conf
+    networks: { dns: { ipv4_address: "${DIEM_NET:-10.53.0}.13" } }
+
+  # health.gov.example., health.xb.example.: the ministries that endorse
+  authorities:
+    <<: *knot
+    command: knotd -c /zones/authorities/knot.conf
+    networks: { dns: { ipv4_address: "${DIEM_NET:-10.53.0}.14" } }
+
+  resolver:                                 # Unbound with root hints and the root trust anchor only
+    build: { context: compose/unbound }
+    depends_on: [root, tld, issuer-dns, emblem-server, authorities]
+    volumes: ["zones:/zones:ro"]
+    networks: { dns: { ipv4_address: "${DIEM_NET:-10.53.0}.53" } }
+    healthcheck:
+      test: ["CMD-SHELL", "drill @127.0.0.1 id.server CH TXT | grep -q NOERROR"]
+      interval: 2s
+      retries: 15
+
+  # records what the resolver sends to the servers, from beside it
+  capture:
+    build: { context: compose/capture }
+    network_mode: "service:resolver"
+    cap_add: [NET_RAW]
+    depends_on: [resolver]
+    volumes: ["capture:/capture"]
+    command:
+      - tcpdump
+      - -i
+      - eth0
+      - -n
+      - -Q
+      - out
+      - --immediate-mode
+      - -U
+      - -Z
+      - root
+      - -w
+      - /capture/resolver.pcap
+      - udp
+      - dst
+      - port
+      - "53"
+
+  # the in-memory examples, with no servers and no network:
+  #   docker compose run --rm local examples.pallet
+  local:
+    <<: *diem
+    profiles: [local]
+    entrypoint: [python, -m]
+    command: [examples]
+    network_mode: none
+
+  # the code of this repository, asking the resolver; started with "docker compose run"
+  validator:
+    <<: *diem
+    profiles: [validate]
+    depends_on:
+      resolver: { condition: service_healthy }
+      capture: { condition: service_started }
+    volumes: ["capture:/capture:ro"]
+    entrypoint: [python, -m]
+    command:
+      - examples.${DIEM_EXAMPLE:-hospital}
+      - --resolver
+      - resolver
+      - --capture
+      - /capture/resolver.pcap
+    networks: [dns]

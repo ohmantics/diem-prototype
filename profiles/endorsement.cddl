@@ -1,0 +1,11 @@
+; The ENDORSE record.   ; draft: #endorsement
+
+endorsement-emblem = {
+  profile: "endorsement",
+  issuer: domain-name,
+  endorsed-profile: profile-id,
+  scope: [* purpose-id / treatment-entry],
+  valid: validity,
+  dnskey-digest: digest,
+  ? mark-digest: digest
+}
